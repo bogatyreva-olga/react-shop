@@ -1,8 +1,11 @@
+"use strict";
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
     mode: "development",
-    entry: "./src/index.js", // входная точка - исходный файл
+    entry: path.resolve(__dirname, './src/index.js'), // входная точка - исходный файл
+    context: path.join(__dirname, 'src'),
     output:{
         path: path.resolve(__dirname, "./public"),     // путь к каталогу выходных файлов - папка public
         publicPath: "/public/",
@@ -16,18 +19,33 @@ module.exports = {
         port: 8081,
         open: true
     },
-    resolve: {
-        extensions: ['.js']
+    resolveLoader: {
+        modules: [
+            path.join(__dirname, 'node_modules')
+        ]
     },
+    resolve: {
+        extensions: ['*', '.js', '.jsx'],
+        modules: [
+            path.join(__dirname, 'node_modules')
+        ]
+    },
+    externals: {
+        'react': 'React'
+    },
+    plugins: [
+        new webpack.ProvidePlugin({
+            "React": "react",
+        }),
+        new webpack.HotModuleReplacementPlugin(),
+    ],
     module:{
         rules:[   //загрузчик для jsx
             {
-                test: /\.jsx?$/, // определяем тип файлов
-                exclude: /(node_modules)/,  // исключаем из обработки папку node_modules
+                test: /\.(js|jsx)$/, // определяем тип файлов
+                include: path.resolve(__dirname, 'src'),
+                exclude: /node_modules/,  // исключаем из обработки папку node_modules
                 loader: "babel-loader",   // определяем загрузчик
-                options:{
-                    presets:[ "@babel/preset-react"]    // используемые плагины
-                }
             }
         ]
     }
