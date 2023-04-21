@@ -6,11 +6,12 @@ const BasketItem = (props) => {
         name,
         price,
         quantity,
+        removeFromBasket = Function.prototype,
     } = props;
     return (
-        <li className="collection-item">{name} * {quantity} = {price}
-            <span className="secondary-content">
-                <i className="material-icons">close</i></span>
+        <li className="collection-item">{name} * {quantity} = {price * quantity} руб
+            <span className="secondary-content" onClick={() => removeFromBasket(id)}>
+                <i className="material-icons basket-delete">close</i></span>
         </li>
     );
 };

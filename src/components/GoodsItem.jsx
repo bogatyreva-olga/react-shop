@@ -10,7 +10,6 @@ const GoodsItem = (props) => {
         addToBasket = Function.prototype,
     } = props;
 
-    console.log(full_background)
     return (
         <div className="card">
             <div className="card-image">
