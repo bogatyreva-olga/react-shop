@@ -5,12 +5,14 @@ import {Preloader} from "./Preloader";
 import {GoodsList} from "./GoodsList";
 import {Cart} from "./Cart";
 import {BasketList} from "./BasketList";
+import {Alert} from "./Alert";
 
 const Shop = () => {
     const [goods, setGoods] = useState([]);
     const [loading, setLoading] = useState(true);
     const [order, setOrder] = useState([]);
     const [isBasketShow, setBasketShow] = useState(false);
+    const [alertName, setAlertName] = useState("");
 
     const addToBasket = (item) => {
         const itemIndex = order.findIndex(orderItem => orderItem.id === item.id);
@@ -33,6 +35,7 @@ const Shop = () => {
             })
             setOrder(newOrder);
         }
+        setAlertName(item.name);
     };
 
     const removeFromBasket = (itemId) => {
@@ -54,6 +57,7 @@ const Shop = () => {
         })
         setOrder(newOrder)
     };
+
     const decQuantity = (itemId) => {
         const newOrder = order.map(el => {
             if (el.id === itemId) {
@@ -71,6 +75,10 @@ const Shop = () => {
 
     const handleBasketShow = () => {
         setBasketShow(!isBasketShow);
+    }
+
+    const closeAlert = () => {
+        setAlertName("");
     }
 
     useEffect(function getGoods() {
@@ -98,6 +106,9 @@ const Shop = () => {
                     removeFromBasket={removeFromBasket}
                     incQuantity={incQuantity}
                     decQuantity={decQuantity}/>
+            }
+            {
+                alertName && <Alert name={alertName} closeAlert={closeAlert}/>
             }
         </main>
     );
